@@ -28,7 +28,7 @@ import csv
 import math
 import operator
 from decimal import Decimal
-
+import scipy.optimize as optimize
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Step 1: Select the K-NN of 𝐲𝑔 from 𝑋 (training data set)
@@ -91,10 +91,41 @@ def getDistancePenalizingFactors(relativeDistances, n):
 Step 3: Determine the global objective 𝜉
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+def classifyNeighbors(neighbors):
+    # escolher classificador e classificar todos os vizinhos de y
+    result = []
+    return result
+
+def getObjectiveFunction(penalizingFactors, qualityMatrix, resultPredicted, trueResult):
+    pass
+
+def constraint():
+    pass
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Step 4: Estimate quality matrix 𝜷
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+# aqui sera chama a função para minimizar a função objetivo respeitando as constraints
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Step 5: Correct the classification result of object 𝐲
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+def f(params):
+    # print(params)  # <-- you'll see that params is a NumPy array
+    a, b, c = params  # <-- for readability you may wish to assign names to the component variables
+    return a ** 2 + b ** 2 + c ** 2
+
+def main():
+
+    initial_guess = [1, 1, 1]
+    result = optimize.minimize(f, initial_guess)
+    if result.success:
+        fitted_params = result.x
+        print(fitted_params)
+    else:
+        raise ValueError(result.message)
+
+main()
