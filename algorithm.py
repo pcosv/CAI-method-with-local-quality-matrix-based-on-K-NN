@@ -28,17 +28,23 @@ import csv
 import math
 import operator
 from decimal import Decimal
+
+import numpy as numpy
 import scipy.optimize as optimize
+import numpy as np
+from scipy.spatial import distance
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Step 1: Select the K-NN of 𝐲𝑔 from 𝑋 (training data set)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 
 # load data
 def loadDataSet(file):
     with open(file) as csvfile:
         lines = list(csv.reader(csvfile, delimiter=','))
         return lines
+
 
 # função que retorna a distância euclidiana
 def euclidianDistance(instance1, instance2, length):
@@ -47,10 +53,11 @@ def euclidianDistance(instance1, instance2, length):
         distance = distance + pow((Decimal(instance1[x]) - Decimal(instance2[x])), 2)
     return math.sqrt(distance)
 
+
 # retorna vizinhos de uma dada instância dado o k
 def getNeighborsKnn(trainSet, instance, k):
     distances = []
-    length = len(trainSet)-1
+    length = len(trainSet) - 1
     for x in range(len(trainSet)):
         dist = euclidianDistance(instance, trainSet[x], length)
         distances.append((trainSet[x], dist))
@@ -65,6 +72,7 @@ def getNeighborsKnn(trainSet, instance, k):
 Step 2: Calculate the distance penalizing factor 𝛿𝑘
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+
 def getDistances(neighbors, y):
     distances = []
     for x in neighbors:
@@ -72,17 +80,19 @@ def getDistances(neighbors, y):
         distances.append(distance)
     return distances
 
+
 def getRelativeDistances(distances):
     relativeDistances = []
     for x in distances:
-        relativeDistance = (x - min(distances))/min(distances)
+        relativeDistance = (x - min(distances)) / min(distances)
         relativeDistances.append(relativeDistance)
     return relativeDistances
+
 
 def getDistancePenalizingFactors(relativeDistances, n):
     penalizingFactors = []
     for x in relativeDistances:
-        penalizingFactor = math.exp((-n)*x)
+        penalizingFactor = math.exp((-n) * x)
         penalizingFactors.append(penalizingFactor)
     return penalizingFactors
 
@@ -91,41 +101,76 @@ def getDistancePenalizingFactors(relativeDistances, n):
 Step 3: Determine the global objective 𝜉
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-def classifyNeighbors(neighbors):
+
+def classifyNeighbors(neighbor):
     # escolher classificador e classificar todos os vizinhos de y
     result = []
     return result
 
-def getObjectiveFunction(penalizingFactors, qualityMatrix, resultPredicted, trueResult):
-    pass
 
-def constraint():
-    pass
+def minimization():
+    resultPredicted = [[0.6, 0.2, 0.2], [0.4, 0.3, 0.3], [0.4, 0.4, 0.2], [0.3, 0.5, 0.2], [0.1, 0.1, 0.7]]
+    trueResult = [[1, 0, 0], [1, 0, 0], [0, 1, 0], [0, 1, 0], [0, 0, 1]]
+    penalizingFactor = [0.6, 0.5, 0.2, 0.1, 0.1]
+
+    def f(x):
+        soma = 0
+        for i in range(len(resultPredicted)):
+            print(np.reshape(x, (3,3)).transpose())
+            soma = soma + (penalizingFactor[i]*(distance.euclidean(np.dot(resultPredicted[i], np.reshape(x, (3,3)).transpose()), trueResult[i])))
+        print(soma)
+        return soma
+
+    initial_guess = np.identity(3)
+    result = optimize.minimize(f, initial_guess, method='SLSQP')
+    if result.success:
+        fitted_params = result.x
+        print(np.reshape(fitted_params, (3,3)))
+    else:
+        raise ValueError(result.message)
+
+
+def constraint(x):
+    dimension = x.shape
+    for x in range(dimension[0]):
+        pass
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Step 4: Estimate quality matrix 𝜷
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-# aqui sera chama a função para minimizar a função objetivo respeitando as constraints
+
+# aqui sera chamada a função para minimizar a função objetivo respeitando as constraints
+# def minimizeFunction(n_classes):
+#     initialGuess = np.identity(n_classes)
+#     result = optimize.minimize(objectiveFunction, initialGuess)
+#     return result
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Step 5: Correct the classification result of object 𝐲
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
-def f(params):
-    # print(params)  # <-- you'll see that params is a NumPy array
-    a, b, c = params  # <-- for readability you may wish to assign names to the component variables
-    return a ** 2 + b ** 2 + c ** 2
-
 def main():
 
-    initial_guess = [1, 1, 1]
-    result = optimize.minimize(f, initial_guess)
-    if result.success:
-        fitted_params = result.x
-        print(fitted_params)
-    else:
-        raise ValueError(result.message)
+    # print(np.identity(3))
+
+    a = [1, 2, 3]
+    b = [3, 4, 5]
+    initialGuess = np.identity(3)
+    #print(initialGuess.transpose())
+
+    #dist = numpy.linalg.norm(a - b)
+    #print(dist)
+
+    #dst = distance.euclidean(a, b)
+    #print(dst)
+
+    #print(np.dot(a, initialGuess.transpose()))
+
+    minimization()
+
+
 
 main()
