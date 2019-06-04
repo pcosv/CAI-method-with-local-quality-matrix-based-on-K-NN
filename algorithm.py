@@ -28,11 +28,10 @@ import csv
 import math
 import operator
 from decimal import Decimal
-
-import numpy as numpy
 import scipy.optimize as optimize
 import numpy as np
 from scipy.spatial import distance
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Step 1: Select the K-NN of 𝐲𝑔 from 𝑋 (training data set)
@@ -108,6 +107,10 @@ def classifyNeighbors(neighbor):
     return result
 
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Step 4: Estimate quality matrix 𝜷
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 def minimization():
     resultPredicted = [[0.6, 0.2, 0.2], [0.4, 0.3, 0.3], [0.4, 0.4, 0.2], [0.3, 0.5, 0.2], [0.1, 0.1, 0.7]]
     trueResult = [[1, 0, 0], [1, 0, 0], [0, 1, 0], [0, 1, 0], [0, 0, 1]]
@@ -121,6 +124,11 @@ def minimization():
         print(soma)
         return soma
 
+    def constraint(x):
+        dimension = x.shape
+        for x in range(dimension[0]):
+            pass
+
     initial_guess = np.identity(3)
     result = optimize.minimize(f, initial_guess, method='SLSQP')
     if result.success:
@@ -130,47 +138,15 @@ def minimization():
         raise ValueError(result.message)
 
 
-def constraint(x):
-    dimension = x.shape
-    for x in range(dimension[0]):
-        pass
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Step 4: Estimate quality matrix 𝜷
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-
-# aqui sera chamada a função para minimizar a função objetivo respeitando as constraints
-# def minimizeFunction(n_classes):
-#     initialGuess = np.identity(n_classes)
-#     result = optimize.minimize(objectiveFunction, initialGuess)
-#     return result
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Step 5: Correct the classification result of object 𝐲
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+def correctClassification():
+    pass
 
 def main():
 
-    # print(np.identity(3))
-
-    a = [1, 2, 3]
-    b = [3, 4, 5]
-    initialGuess = np.identity(3)
-    #print(initialGuess.transpose())
-
-    #dist = numpy.linalg.norm(a - b)
-    #print(dist)
-
-    #dst = distance.euclidean(a, b)
-    #print(dst)
-
-    #print(np.dot(a, initialGuess.transpose()))
-
     minimization()
-
-
 
 main()
