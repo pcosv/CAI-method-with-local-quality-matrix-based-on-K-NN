@@ -30,6 +30,7 @@ import operator
 from decimal import Decimal
 import scipy.optimize as optimize
 import numpy as np
+from scipy.optimize import Bounds, LinearConstraint
 from scipy.spatial import distance
 
 
@@ -121,32 +122,70 @@ def minimization():
         for i in range(len(resultPredicted)):
             print(np.reshape(x, (3,3)).transpose())
             soma = soma + (penalizingFactor[i]*(distance.euclidean(np.dot(resultPredicted[i], np.reshape(x, (3,3)).transpose()), trueResult[i])))
-        print(soma)
+        #print(soma)
         return soma
 
+    # cada linha da matriz deve somar 1
     def constraint(x):
         dimension = x.shape
-        for x in range(dimension[0]):
-            pass
+        soma = []
+        for a in range(dimension[0]):
+            sum = 0
+            for b in range(dimension[0]):
+                #print(x[a][b])
+                sum = sum + x[a][b]
+            soma.append(sum)
+        return soma
+
 
     initial_guess = np.identity(3)
-    result = optimize.minimize(f, initial_guess, method='SLSQP')
-    if result.success:
-        fitted_params = result.x
-        print(np.reshape(fitted_params, (3,3)))
-    else:
-        raise ValueError(result.message)
+    dimension = initial_guess.shape
+    n = dimension[0]
+
+    # o valor de cada elemendo da matriz deve estar entre 0 e 1
+    bounds = [(0, 1)]*(n*n)
+
+    eq_cons = {'type': 'eq',
+               'fun': lambda x: np.array(constraint),
+               'jac': lambda x: np.array(np.ones((3, 3)))}
+
+    def rosen_der(x):
+        xm = x[1:-1]
+        xm_m1 = x[:-2]
+        xm_p1 = x[2:]
+        der = np.zeros_like(x)
+        der[1:-1] = 200 * (xm - xm_m1 ** 2) - 400 * (xm_p1 - xm ** 2) * xm - 2 * (1 - xm)
+        der[0] = -400 * x[0] * (x[1] - x[0] ** 2) - 2 * (1 - x[0])
+        der[-1] = 200 * (x[-1] - x[-2] ** 2)
+
+        return der
+
+    #result = optimize.minimize(f, initial_guess, method='SLSQP', jac=rosen_der, bounds=bounds)
+    result = optimize.minimize(f, initial_guess, method='BFGS', bounds=bounds)
+    print(np.reshape(result.x, (3,3)))
+
+    #print(constraint(np.reshape(result.x, (3,3))))
+
+
+    return np.reshape(result.x, (3,3))
+
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Step 5: Correct the classification result of object 𝐲
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-def correctClassification():
-    pass
+def correctClassification(b, y, u):
+    return (y*(np.dot((np.reshape(b, (len(u),len(u))).transpose()),(u.transpose())))) + ((1 - y)*(u.transpose()))
 
 def main():
+    b = minimization()
+    u = np.array([0.4, 0.35, 0.25])
+    #b = np.array([[1, 0, 0], [0.0849, 0.9151, 0], [0.6148, 0, 0.3852]])
+    print(b)
 
-    minimization()
+    finalResultCorrected = correctClassification(b, 0.9, u)
+    print(finalResultCorrected)
+
 
 main()
