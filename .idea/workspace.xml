@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="23256229-fddc-4502-a88d-e7a4630ac3d4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/algorithm.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithm.py" afterDir="false" />
-    </list>
+    <list default="true" id="23256229-fddc-4502-a88d-e7a4630ac3d4" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,8 +23,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/algorithm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1488">
-              <caret line="137" selection-start-line="137" selection-end-line="137" />
+            <state relative-caret-position="301">
+              <caret line="93" column="32" selection-start-line="93" selection-start-column="4" selection-end-line="93" selection-end-column="32" />
               <folding>
                 <element signature="e#639#649#0" expanded="true" />
               </folding>
@@ -190,7 +188,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.24819277" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32891566" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.16385542" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.46385542" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5003524" side_tool="true" weight="0.4433735" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32891566" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -329,8 +327,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/algorithm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1488">
-          <caret line="137" selection-start-line="137" selection-end-line="137" />
+        <state relative-caret-position="301">
+          <caret line="93" column="32" selection-start-line="93" selection-start-column="4" selection-end-line="93" selection-end-column="32" />
           <folding>
             <element signature="e#639#649#0" expanded="true" />
           </folding>

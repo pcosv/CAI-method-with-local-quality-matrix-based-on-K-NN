@@ -103,7 +103,7 @@ def getDistancePenalizingFactors(relativeDistances, n):
 Step 3 and 4: Determine the global objective 𝜉 and Estimate quality matrix 𝜷
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-def minimization(resultPredicted, trueResult, penalizingFactor, n_classes):
+def minimization(resultPredicted, trueResult, penalizingFactors, n_classes):
 
     def f(x):
         soma = 0
@@ -111,7 +111,7 @@ def minimization(resultPredicted, trueResult, penalizingFactor, n_classes):
             bt = np.reshape(x, (n_classes,n_classes)).transpose()
             rp = np.reshape(np.array(resultPredicted[i]), (n_classes, 1))
             tr = np.reshape(np.array(trueResult[i]), (n_classes, 1))
-            soma = soma + (penalizingFactor[i]*(distance.euclidean(np.dot(bt, rp), tr)))
+            soma = soma + (penalizingFactors[i]*(distance.euclidean(np.dot(bt, rp), tr)))
         #print(soma)
         return soma
 
