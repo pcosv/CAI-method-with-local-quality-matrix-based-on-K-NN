@@ -170,7 +170,7 @@ def main():
     simplefilter(action='ignore', category=FutureWarning)
 
     # dataset
-    data = pandas.read_csv('tae.csv')
+    data = pandas.read_csv('datasets/tae.csv')
     X = data.drop('UNS', axis=1)
     y = data['UNS']
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20)

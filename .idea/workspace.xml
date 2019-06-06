@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="23256229-fddc-4502-a88d-e7a4630ac3d4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/tae.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ve.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/algorithm.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kn.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/kn.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tae.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/tae.csv" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,8 +26,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/algorithm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="61">
-              <caret line="255" column="25" selection-start-line="255" selection-start-column="25" selection-end-line="255" selection-end-column="25" />
+            <state relative-caret-position="570">
+              <caret line="278" column="129" selection-start-line="278" selection-start-column="129" selection-end-line="278" selection-end-column="129" />
               <folding>
                 <element signature="e#639#649#0" expanded="true" />
               </folding>
@@ -38,7 +36,7 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tae.csv">
+        <entry file="file://$PROJECT_DIR$/datasets/tae.csv">
           <provider editor-type-id="csv-table-editor">
             <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
           </provider>
@@ -50,7 +48,7 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ve.csv">
+        <entry file="file://$PROJECT_DIR$/datasets/ve.csv">
           <provider editor-type-id="csv-table-editor">
             <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
           </provider>
@@ -62,7 +60,7 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/kn.csv">
+        <entry file="file://$PROJECT_DIR$/datasets/kn.csv">
           <provider editor-type-id="csv-table-editor">
             <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
           </provider>
@@ -132,6 +130,11 @@
               <item name="CAI-method-with-local-quality-matrix-based-on-K-NN" type="b2602c69:ProjectViewProjectNode" />
               <item name="CAI-method-with-local-quality-matrix-based-on-K-NN" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="CAI-method-with-local-quality-matrix-based-on-K-NN" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CAI-method-with-local-quality-matrix-based-on-K-NN" type="462c0819:PsiDirectoryNode" />
+              <item name="datasets" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -143,6 +146,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/datasets" />
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
@@ -210,20 +214,19 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49905837" visible="true" weight="0.121212125" />
-      <window_info id="Structure" order="1" sideWeight="0.50094163" side_tool="true" visible="true" weight="0.121212125" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4985591" visible="true" weight="0.121212125" />
+      <window_info id="Structure" order="1" sideWeight="0.50144094" side_tool="true" visible="true" weight="0.121212125" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49964765" visible="true" weight="0.36024097" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49964765" weight="0.43373495" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.24819277" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32891566" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.16385542" />
+      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.16385542" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5003524" side_tool="true" weight="0.4433735" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32891566" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -323,7 +326,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/kn.csv">
+    <entry file="file://$PROJECT_DIR$/datasets/kn.csv">
       <provider editor-type-id="csv-table-editor">
         <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
       </provider>
@@ -340,7 +343,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tae.csv">
+    <entry file="file://$PROJECT_DIR$/datasets/tae.csv">
       <provider editor-type-id="csv-table-editor">
         <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
       </provider>
@@ -350,7 +353,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ve.csv">
+    <entry file="file://$PROJECT_DIR$/datasets/ve.csv">
       <provider editor-type-id="csv-table-editor">
         <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
       </provider>
@@ -362,8 +365,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/algorithm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="61">
-          <caret line="255" column="25" selection-start-line="255" selection-start-column="25" selection-end-line="255" selection-end-column="25" />
+        <state relative-caret-position="570">
+          <caret line="278" column="129" selection-start-line="278" selection-start-column="129" selection-end-line="278" selection-end-column="129" />
           <folding>
             <element signature="e#639#649#0" expanded="true" />
           </folding>
