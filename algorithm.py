@@ -28,11 +28,19 @@ import csv
 import math
 import operator
 from decimal import Decimal
+
+import pandas as pandas
 import scipy.optimize as optimize
 import numpy as np
-from scipy.optimize import Bounds, LinearConstraint
+import sns as sns
 from scipy.spatial import distance
-
+from sklearn import metrics, datasets
+from sklearn.metrics import confusion_matrix
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.ensemble import RandomForestClassifier as RF
+import seaborn as sns; sns.set()
+from warnings import simplefilter
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Step 1: Select the K-NN of 𝐲𝑔 from 𝑋 (training data set)
@@ -50,14 +58,14 @@ def loadDataSet(file):
 def euclidianDistance(instance1, instance2, length):
     distance = 0
     for x in range(length):
-        distance = distance + pow((Decimal(instance1[x]) - Decimal(instance2[x])), 2)
+        distance = distance + pow((instance1[x] - instance2[x]), 2)
     return math.sqrt(distance)
 
 
 # retorna vizinhos de uma dada instância dado o k
 def getNeighborsKnn(trainSet, instance, k):
     distances = []
-    length = len(trainSet) - 1
+    length = len(trainSet[0]) - 1
     for x in range(len(trainSet)):
         dist = euclidianDistance(instance, trainSet[x], length)
         distances.append((trainSet[x], dist))
@@ -76,7 +84,7 @@ Step 2: Calculate the distance penalizing factor 𝛿𝑘
 def getDistances(neighbors, y):
     distances = []
     for x in neighbors:
-        distance = euclidianDistance(y, x)
+        distance = euclidianDistance(y, x, len(neighbors[0]))
         distances.append(distance)
     return distances
 
@@ -112,63 +120,47 @@ def classifyNeighbors(neighbor):
 Step 4: Estimate quality matrix 𝜷
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-def minimization():
-    resultPredicted = [[0.6, 0.2, 0.2], [0.4, 0.3, 0.3], [0.4, 0.4, 0.2], [0.3, 0.5, 0.2], [0.1, 0.1, 0.7]]
-    trueResult = [[1, 0, 0], [1, 0, 0], [0, 1, 0], [0, 1, 0], [0, 0, 1]]
-    penalizingFactor = [0.6, 0.5, 0.2, 0.1, 0.1]
+def minimization(resultPredicted, trueResult, penalizingFactor):
+    n_classes = 4
 
     def f(x):
         soma = 0
         for i in range(len(resultPredicted)):
-            print(np.reshape(x, (3,3)).transpose())
-            soma = soma + (penalizingFactor[i]*(distance.euclidean(np.dot(resultPredicted[i], np.reshape(x, (3,3)).transpose()), trueResult[i])))
+            #print(np.reshape(x, (n_classes,n_classes)).transpose())
+            soma = soma + (penalizingFactor[i]*(distance.euclidean(np.dot(resultPredicted[i], np.reshape(x, (n_classes,n_classes)).transpose()), trueResult[i])))
         #print(soma)
         return soma
 
     # cada linha da matriz deve somar 1
     def constraint(x):
-        dimension = x.shape
+        dimension = np.reshape(x, (n_classes,n_classes))
         soma = []
-        for a in range(dimension[0]):
-            sum = 0
-            for b in range(dimension[0]):
-                #print(x[a][b])
-                sum = sum + x[a][b]
-            soma.append(sum)
+        for a in range(dimension.shape[0]):
+            sump = 0.0
+            for b in range(dimension.shape[0]):
+                var = (np.reshape(x, (n_classes,n_classes)))
+                sump = sump + var[a][b]
+            soma.append(sump)
+        print('soma das linhas')
+        print(soma)
         return soma
 
+    initial_guess = np.array(np.identity(n_classes))
 
-    initial_guess = np.identity(3)
     dimension = initial_guess.shape
-    n = dimension[0]
+    bounds = [(0, 1)]*(n_classes*n_classes)
 
-    # o valor de cada elemendo da matriz deve estar entre 0 e 1
-    bounds = [(0, 1)]*(n*n)
+    eq_cons = ({'type': 'eq',
+               'fun': lambda x: np.array([x[0] + x[1] + x[2] + x[3] - 1,
+                                          x[4] + x[5] + x[6] + x[7] - 1,
+                                          x[8] + x[9] + x[10] + x[11] - 1,
+                                          x[12] + x[13] + x[14] + x[15] - 1])})
 
-    eq_cons = {'type': 'eq',
-               'fun': lambda x: np.array(constraint),
-               'jac': lambda x: np.array(np.ones((3, 3)))}
+    result = optimize.minimize(f, initial_guess, method='slsqp', constraints=eq_cons, options={'disp': True})
 
-    def rosen_der(x):
-        xm = x[1:-1]
-        xm_m1 = x[:-2]
-        xm_p1 = x[2:]
-        der = np.zeros_like(x)
-        der[1:-1] = 200 * (xm - xm_m1 ** 2) - 400 * (xm_p1 - xm ** 2) * xm - 2 * (1 - xm)
-        der[0] = -400 * x[0] * (x[1] - x[0] ** 2) - 2 * (1 - x[0])
-        der[-1] = 200 * (x[-1] - x[-2] ** 2)
+    print(result)
 
-        return der
-
-    #result = optimize.minimize(f, initial_guess, method='SLSQP', jac=rosen_der, bounds=bounds)
-    result = optimize.minimize(f, initial_guess, method='BFGS', bounds=bounds)
-    print(np.reshape(result.x, (3,3)))
-
-    #print(constraint(np.reshape(result.x, (3,3))))
-
-
-    return np.reshape(result.x, (3,3))
-
+    return np.reshape(result.x, (n_classes,n_classes))
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -176,16 +168,92 @@ Step 5: Correct the classification result of object 𝐲
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 def correctClassification(b, y, u):
-    return (y*(np.dot((np.reshape(b, (len(u),len(u))).transpose()),(u.transpose())))) + ((1 - y)*(u.transpose()))
+    return (y*(np.dot((np.reshape(b, (len(u[0]),len(u[0]))).transpose()),(u.transpose())))) + ((1 - y)*(u.transpose()))
 
 def main():
-    b = minimization()
-    u = np.array([0.4, 0.35, 0.25])
-    #b = np.array([[1, 0, 0], [0.0849, 0.9151, 0], [0.6148, 0, 0.3852]])
-    print(b)
 
-    finalResultCorrected = correctClassification(b, 0.9, u)
-    print(finalResultCorrected)
+    simplefilter(action='ignore', category=FutureWarning)
+
+    data = pandas.read_csv('kn.csv')
+    X = data.drop('UNS', axis=1)
+    y = data['UNS']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20)
+
+    gnb = GaussianNB()
+    gnb.fit(X_train, y_train)
+    # y_predVector = gnb.predict_proba(X_test)
+    # y_pred = gnb.predict(X_test)
+    # print("Accuracy:", metrics.accuracy_score(y_test, y_predVector))
+    # print("Accuracy:", metrics.accuracy_score(y_test, y_pred))
+    # mat = confusion_matrix(y_pred, y_test)
+    # print(mat)
+
+    k = 5
+    counter = 0
+    nParameter = 5
+    for a in range(len(X_test)):
+        #print(X_test.values[a])
+        neighbors = getNeighborsKnn(X_train.values, X_test.values[a], k)
+        distances = getDistances(neighbors, X_test.values[a])
+        relativeDistances = getRelativeDistances(distances)
+        penalizingFactors = getDistancePenalizingFactors(relativeDistances, nParameter)
+        predNeighborsVector = gnb.predict_proba(neighbors)
+
+        trueResult = []
+        for v in range(len(neighbors)):
+            for l in range(len(X_train.values)):
+                if all(neighbors[v] == X_train.values[l]):
+                    trueResult.append(y_train.values[l])
+
+        trueResultVector = []
+        for true in trueResult:
+            aux = []
+            if true == 'High':
+                aux = np.zeros(4)
+                aux[0] = 1
+            if true == 'Low':
+                aux = np.zeros(4)
+                aux[1] = 1
+            if true == 'Middle':
+                aux = np.zeros(4)
+                aux[2] = 1
+            if true == 'very_low':
+                aux = np.zeros(4)
+                aux[3] = 1
+            trueResultVector.append(aux)
+
+        u = gnb.predict_proba([X_test.values[a]])
+        uClass = gnb.predict([X_test.values[a]])
+        print('antes')
+        print(u)
+        print(uClass)
+        b = minimization(predNeighborsVector, trueResultVector, penalizingFactors)
+        finalResultCorrected = correctClassification(b, 0.9, u)
+
+        classUpdated = 0
+        classFinal = 'very_low'
+        for i in range(len(finalResultCorrected)):
+            if finalResultCorrected[i] > classUpdated:
+                classUpdated = finalResultCorrected[i]
+                if i == 0:
+                    classFinal = 'High'
+                if i == 1:
+                    classFinal = 'Low'
+                if i == 2:
+                    classFinal = 'Middle'
+        print('depois')
+        print(finalResultCorrected)
+        print(classFinal)
+        if uClass[0] != classFinal:
+            counter = counter + 1
+
+    print(counter)
+
+    # Random Forest
+    # clf = RF()
+    # clf.fit(X_train, y_train)
+    # pred_pro = clf.predict_log_proba(X_test)
+    # print(pred_pro)
 
 
 main()
