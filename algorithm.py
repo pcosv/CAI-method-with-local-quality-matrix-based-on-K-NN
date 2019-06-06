@@ -27,12 +27,9 @@ end */
 import csv
 import math
 import operator
-from decimal import Decimal
-
 import pandas as pandas
 import scipy.optimize as optimize
 import numpy as np
-import sns as sns
 from scipy.spatial import distance
 from sklearn import metrics, datasets
 from sklearn.metrics import confusion_matrix
@@ -42,21 +39,11 @@ from sklearn.ensemble import RandomForestClassifier as RF
 import seaborn as sns;
 from sklearn.svm import SVC
 import matplotlib.pyplot as plt
-
-sns.set()
 from warnings import simplefilter
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Step 1: Select the K-NN of 𝐲𝑔 from 𝑋 (training data set)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-
-# load data
-def loadDataSet(file):
-    with open(file) as csvfile:
-        lines = list(csv.reader(csvfile, delimiter=','))
-        return lines
-
 
 # função que retorna a distância euclidiana
 def euclidianDistance(instance1, instance2, length):
@@ -112,20 +99,9 @@ def getDistancePenalizingFactors(relativeDistances, n):
     return penalizingFactors
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Step 3: Determine the global objective 𝜉
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-
-def classifyNeighbors(neighbor):
-    # escolher classificador e classificar todos os vizinhos de y
-    result = []
-    return result
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Step 4: Estimate quality matrix 𝜷
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Step 3 and 4: Determine the global objective 𝜉 and Estimate quality matrix 𝜷
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 def minimization(resultPredicted, trueResult, penalizingFactor, n_classes):
 
@@ -159,7 +135,6 @@ Step 5: Correct the classification result of object 𝐲
 
 def correctClassification(b, y, u):
     return (y*(np.dot((np.reshape(b, (len(u[0]),len(u[0]))).transpose()),(u.transpose())))) + ((1 - y)*(u.transpose()))
-
 
 
 def main():
